@@ -4,5 +4,7 @@ docker-compose up -d
 
 docker exec -it postgres psql -U hk3 -d salesdb -c "SELECT * FROM sales_summary LIMIT 10;"
 
+docker-compose down
+docker-compose up -d
 
 
