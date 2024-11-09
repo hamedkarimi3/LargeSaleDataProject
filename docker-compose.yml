@@ -1,0 +1,39 @@
+services:
+  spark-master:
+    image: bitnami/spark:latest
+    container_name: spark-master
+    environment:
+      - SPARK_MODE=master
+    ports:
+      - "7077:7077"   # Spark master port
+      - "8080:8080"   # Spark Web UI port
+    networks:
+      - spark-network
+
+  spark-worker:
+    image: bitnami/spark:latest
+    container_name: spark-worker
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+    depends_on:
+      - spark-master
+    networks:
+      - spark-network
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_USER: hk3
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: salesdb
+    ports:
+      - "5432:5432"
+    networks:
+      - spark-network
+
+networks:
+  spark-network:
+    driver: bridge
+
