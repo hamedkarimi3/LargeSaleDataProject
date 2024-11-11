@@ -9,11 +9,11 @@ services:
       - "8080:8080"
     volumes:
       - "./SparkProcessing.py:/opt/bitnami/spark/SparkProcessing.py"
-      - "./large_sales_data.csv:/opt/bitnami/spark/large_sales_data.csv"  # New volume for the CSV file
-      - "./postgresql-42.7.4.jar:/opt/bitnami/spark/jars/postgresql-42.7.4.jar"  # Add this line
+      - "./large_sales_data.csv:/opt/bitnami/spark/large_sales_data.csv"
+      - "C:/Users/hmdkr/spark/spark-3.5.3-bin-hadoop3/jars/postgresql-42.7.4.jar:/opt/bitnami/spark/jars/postgresql-42.7.4.jar"
     networks:
       - spark-network
-
+  
   spark-worker:
     image: bitnami/spark:latest
     container_name: spark-worker

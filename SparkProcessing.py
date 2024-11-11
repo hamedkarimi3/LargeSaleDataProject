@@ -22,6 +22,9 @@ df = spark.read.csv("/opt/bitnami/spark/large_sales_data.csv", header=True, infe
 # Calculate total sales per product per day
 sales_summary = df.groupBy("Date", "Product") \
     .agg(spark_sum(col("Quantity") * col("Price")).alias("Total_Sales"))
+# Show the transformed data (optional for verification)
+sales_summary.show(10)
+
 
 # PostgreSQL database connection properties
 db_properties = {
