@@ -5,8 +5,12 @@ services:
     environment:
       - SPARK_MODE=master
     ports:
-      - "7077:7077"   # Spark master port
-      - "8080:8080"   # Spark Web UI port
+      - "7077:7077"
+      - "8080:8080"
+    volumes:
+      - "./SparkProcessing.py:/opt/bitnami/spark/SparkProcessing.py"
+      - "./large_sales_data.csv:/opt/bitnami/spark/large_sales_data.csv"  # New volume for the CSV file
+      - "./postgresql-42.7.4.jar:/opt/bitnami/spark/jars/postgresql-42.7.4.jar"  # Add this line
     networks:
       - spark-network
 
@@ -36,4 +40,5 @@ services:
 networks:
   spark-network:
     driver: bridge
+
 

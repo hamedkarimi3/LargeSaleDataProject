@@ -7,4 +7,7 @@ docker exec -it postgres psql -U hk3 -d salesdb -c "SELECT * FROM sales_summary 
 docker-compose down
 docker-compose up -d
 
+docker exec -it spark-master /opt/bitnami/spark/bin/spark-submit /opt/bitnami/spark/SparkProcessing.py
+
+
 
