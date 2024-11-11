@@ -19,6 +19,9 @@ spark = SparkSession.builder \
 # Load sales data
 df = spark.read.csv("/opt/bitnami/spark/large_sales_data.csv", header=True, inferSchema=True)
 
+# Print the schema to verify data types (helpful for debugging)
+df.printSchema()
+
 # Calculate total sales per product per day
 sales_summary = df.groupBy("Date", "Product") \
     .agg(spark_sum(col("Quantity") * col("Price")).alias("Total_Sales"))
@@ -34,13 +37,14 @@ db_properties = {
 }
 
 # Write the DataFrame to PostgreSQL
-sales_summary.write.jdbc(
-    url="jdbc:postgresql://localhost:5432/salesdb",  # Changed from localhost to postgres
-    table="sales_summary",
-    mode="overwrite",
-    properties=db_properties
-)
-
-
-print("Data loaded into PostgreSQL")
+try:
+    sales_summary.write.jdbc(
+        url="jdbc:postgresql://postgres:5432/salesdb",  # Corrected to 'postgres' container name
+        table="sales_summary",
+        mode="overwrite",  # 'overwrite' to create or replace the table
+        properties=db_properties
+    )
+    print("Data loaded into PostgreSQL")
+except Exception as e:
+    print("Error during data load:", e)
 
