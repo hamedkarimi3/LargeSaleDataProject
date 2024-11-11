@@ -52,6 +52,8 @@ services:
       - ./SparkProcessing.py:/app/SparkProcessing.py  # Mount the script
       - ./large_sales_data.csv:/app/large_sales_data.csv  # Mount sales data (if needed)
     entrypoint: python /app/SparkProcessing.py  # Automatically run the Spark job
+    environment:
+      - PYTHONUNBUFFERED=1
     networks:
       - spark-network
 
