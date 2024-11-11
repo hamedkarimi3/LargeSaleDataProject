@@ -35,7 +35,7 @@ db_properties = {
 
 # Write the DataFrame to PostgreSQL
 sales_summary.write.jdbc(
-    url="jdbc:postgresql://postgres:5432/salesdb",  # Changed from localhost to postgres
+    url="jdbc:postgresql://localhost:5432/salesdb",  # Changed from localhost to postgres
     table="sales_summary",
     mode="overwrite",
     properties=db_properties
