@@ -1,14 +1,16 @@
+
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, sum as spark_sum
 
 # Initialize Spark session with JDBC driver path
 spark = SparkSession.builder \
     .appName("Sales Data Processing") \
-        .config("spark.jars", "C:/Users/hmdkr/spark/spark-3.5.3-bin-hadoop3/jars/postgresql-42.7.4.jar") \
-        .getOrCreate()
+    .config("spark.jars", "C:/Users/hmdkr/spark/spark-3.5.3-bin-hadoop3/jars/postgresql-42.7.4.jar") \
+    .getOrCreate()
 
 # Load sales data
-df = spark.read.csv("C:/Users/hmdkr/Documents/ADataEngineeringUdemyCourse/LargeSaleDataProject/large_sales_data.csv", header=True, inferSchema=True)  # Update the path here
+# Ensure the file path is correctly formatted for Spark on Windows
+df = spark.read.csv("file:///C:/Users/hmdkr/Documents/ADataEngineeringUdemyCourse/LargeSaleDataProject/large_sales_data.csv", header=True, inferSchema=True)
 
 # Print the schema (optional)
 df.printSchema()
@@ -30,7 +32,7 @@ db_properties = {
 # Write the DataFrame to PostgreSQL
 try:
     sales_summary.write.jdbc(
-        url="jdbc:postgresql://postgres:5432/salesdb",
+        url="jdbc:postgresql://localhost:5432/salesdb",  # Adjust the URL if needed
         table="sales_summary",
         mode="overwrite",  # 'overwrite' to create or replace the table
         properties=db_properties
