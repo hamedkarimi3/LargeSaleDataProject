@@ -3,10 +3,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, sum as spark_sum
 
 # Initialize Spark session with JDBC driver path
-spark = SparkSession.builder \
-    .appName("Sales Data Processing") \
-    .config("spark.jars", "C:/Users/hmdkr/spark/spark-3.5.3-bin-hadoop3/jars/postgresql-42.7.4.jar") \
-    .getOrCreate()
+spark = SparkSession.builder.appName("Sales Data Processing").config("spark.jars", "C:/Users/hmdkr/spark/spark-3.5.3-bin-hadoop3/jars/postgresql-42.7.4.jar").getOrCreate()
 
 # Load sales data
 # Ensure the file path is correctly formatted for Spark on Windows
@@ -16,8 +13,7 @@ df = spark.read.csv("file:///C:/Users/hmdkr/Documents/ADataEngineeringUdemyCours
 df.printSchema()
 
 # Calculate total sales per product per day
-sales_summary = df.groupBy("Date", "Product") \
-    .agg(spark_sum(col("Quantity") * col("Price")).alias("Total_Sales"))
+sales_summary = df.groupBy("Date", "Product").agg(spark_sum(col("Quantity") * col("Price")).alias("Total_Sales"))
 
 # Show the transformed data (optional)
 sales_summary.show(10)
