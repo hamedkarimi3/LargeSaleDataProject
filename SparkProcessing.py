@@ -3,7 +3,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, sum as spark_sum
 
 # Initialize Spark session with JDBC driver path
-spark = SparkSession.builder.appName("Sales Data Processing").config("spark.jars", "C:/Users/hmdkr/spark/spark-3.5.3-bin-hadoop3/jars/postgresql-42.7.4.jar").getOrCreate()
+spark = SparkSession.builder.appName("Sales Data Processing").config("spark.jars", "C:\\Users\\hmdkr\\spark\\spark-3.5.3-bin-hadoop3\\jars\\postgresql-42.7.4.jar").config("spark.driver.memory", "2g").config("spark.executor.memory", "2g").getOrCreate()
 
 # Load sales data
 # Ensure the file path is correctly formatted for Spark on Windows
