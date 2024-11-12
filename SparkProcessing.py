@@ -4,11 +4,11 @@ from pyspark.sql.functions import col, sum as spark_sum
 # Initialize Spark session with JDBC driver path
 spark = SparkSession.builder \
     .appName("Sales Data Processing") \
-        .config("spark.jars", "path/to/postgresql-42.7.4.jar") \
+        .config("spark.jars", "C:/Users/hmdkr/spark/spark-3.5.3-bin-hadoop3/jars/postgresql-42.7.4.jar") \
         .getOrCreate()
 
 # Load sales data
-df = spark.read.csv("path/to/large_sales_data.csv", header=True, inferSchema=True)  # Update the path here
+df = spark.read.csv("C:/Users/hmdkr/Documents/ADataEngineeringUdemyCourse/LargeSaleDataProject/large_sales_data.csv", header=True, inferSchema=True)  # Update the path here
 
 # Print the schema (optional)
 df.printSchema()
