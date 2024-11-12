@@ -4,8 +4,8 @@ from pyspark.sql.functions import col, sum as spark_sum
 # Initialize Spark session with JDBC driver path
 spark = SparkSession.builder \
     .appName("Sales Data Processing") \
-    .config("spark.jars", "path/to/postgresql-42.7.4.jar") \  # Make sure to replace with actual path
-    .getOrCreate()
+        .config("spark.jars", "path/to/postgresql-42.7.4.jar") \
+        .getOrCreate()
 
 # Load sales data
 df = spark.read.csv("path/to/large_sales_data.csv", header=True, inferSchema=True)  # Update the path here
