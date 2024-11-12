@@ -1,13 +1,11 @@
-
-#This file is used to run Python scripts 
-#for data generation and querying.
-
+# Use python:3.8 as the base image
 FROM python:3.8
 
 # Install OpenJDK 11 and other dependencies
 RUN apt-get update && apt-get install -y \
     openjdk-11-jdk \
-    && apt-get clean
+    curl gnupg && \
+    apt-get clean
 
 # Set JAVA_HOME environment variable
 ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
@@ -24,6 +22,3 @@ COPY . .
 
 # Set the command to run the Spark job
 ENTRYPOINT ["python", "/app/SparkProcessing.py"]
-
-
-

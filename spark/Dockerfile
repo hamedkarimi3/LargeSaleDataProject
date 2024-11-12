@@ -1,7 +1,7 @@
-# Use openjdk:11-jre-slim as the base image
+# Use openjdk:11-jre-slim which has Java preinstalled
 FROM openjdk:11-jre-slim
 
-# Install Python, pip, and necessary dependencies
+# Install Python and pip
 RUN apt-get update && apt-get install -y \
     python3 python3-pip curl && \
     apt-get clean
@@ -9,16 +9,12 @@ RUN apt-get update && apt-get install -y \
 # Install PySpark
 RUN pip3 install pyspark
 
-# Install Spark by downloading it
-RUN curl -L https://archive.apache.org/dist/spark/spark-3.5.3/spark-3.5.3-bin-hadoop3.2.tgz | tar -xz -C /opt
+# Install PostgreSQL JDBC driver
+ADD https://jdbc.postgresql.org/download/postgresql-42.2.5.jar /opt/spark/jars/
 
 # Set Spark environment variables
-ENV SPARK_HOME=/opt/spark-3.5.3-bin-hadoop3.2
+ENV SPARK_HOME=/opt/spark
 ENV PATH="$SPARK_HOME/bin:$PATH"
 
-# Add PostgreSQL JDBC driver
-ADD https://jdbc.postgresql.org/download/postgresql-42.2.5.jar /opt/spark-3.5.3-bin-hadoop3.2/jars/
-
-# Set the working directory (optional based on your project structure)
+# Set the working directory
 WORKDIR /app
-

@@ -1,33 +1,24 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[5]:
-
-
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, sum as spark_sum
 
-# Initialize Spark session with JDBC driver path (if required)
+# Initialize Spark session with JDBC driver path
 spark = SparkSession.builder \
     .appName("Sales Data Processing") \
-    .config("spark.jars", "/opt/bitnami/spark/jars/postgresql-42.7.4.jar") \
-    .config("spark.driver.extraClassPath", "/opt/bitnami/spark/jars/postgresql-42.7.4.jar") \
+    .config("spark.jars", "path/to/postgresql-42.7.4.jar") \  # Make sure to replace with actual path
     .getOrCreate()
 
-    
-
 # Load sales data
-df = spark.read.csv("/opt/bitnami/spark/large_sales_data.csv", header=True, inferSchema=True)
+df = spark.read.csv("path/to/large_sales_data.csv", header=True, inferSchema=True)  # Update the path here
 
-# Print the schema to verify data types (helpful for debugging)
+# Print the schema (optional)
 df.printSchema()
 
 # Calculate total sales per product per day
 sales_summary = df.groupBy("Date", "Product") \
     .agg(spark_sum(col("Quantity") * col("Price")).alias("Total_Sales"))
-# Show the transformed data (optional for verification)
-sales_summary.show(10)
 
+# Show the transformed data (optional)
+sales_summary.show(10)
 
 # PostgreSQL database connection properties
 db_properties = {
@@ -39,7 +30,7 @@ db_properties = {
 # Write the DataFrame to PostgreSQL
 try:
     sales_summary.write.jdbc(
-        url="jdbc:postgresql://postgres:5432/salesdb",  # Corrected to 'postgres' container name
+        url="jdbc:postgresql://postgres:5432/salesdb",
         table="sales_summary",
         mode="overwrite",  # 'overwrite' to create or replace the table
         properties=db_properties
@@ -47,4 +38,3 @@ try:
     print("Data loaded into PostgreSQL")
 except Exception as e:
     print("Error during data load:", e)
-
